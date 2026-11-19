@@ -19,7 +19,7 @@ function AddMovieForm({ onAddMovie }: AddMovieFormProps) {
 
     const newMovie: Omit<Movie, "id"> = {
       title: title.trim(),
-      genre,
+      genre: genre.trim(),
       year: Number(year),
       rating: Number(rating),
       poster: poster.trim(),
@@ -28,7 +28,6 @@ function AddMovieForm({ onAddMovie }: AddMovieFormProps) {
 
     onAddMovie(newMovie);
 
-    // Clear the form after adding the movie
     setTitle("");
     setGenre("");
     setYear("");
@@ -37,35 +36,42 @@ function AddMovieForm({ onAddMovie }: AddMovieFormProps) {
   };
 
   return (
-    <div className="add-movie-form">
-      <h2>Add a New Movie</h2>
+    <section className="add-movie-section">
+      <div className="add-movie-heading">
+        <div className="add-movie-icon">+</div>
 
-      <form onSubmit={handleSubmit}>
         <div>
+          <h2>Add a New Movie</h2>
+          <p>Expand your collection with your next favourite movie.</p>
+        </div>
+      </div>
+
+      <form className="add-movie-form" onSubmit={handleSubmit}>
+        <div className="form-field">
           <label htmlFor="title">Movie Title</label>
           <input
             id="title"
             type="text"
             value={title}
             onChange={(event) => setTitle(event.target.value)}
-            placeholder="Enter movie title"
+            placeholder="e.g. The Dark Knight"
             required
           />
         </div>
 
-        <div>
+        <div className="form-field">
           <label htmlFor="genre">Genre</label>
           <input
             id="genre"
             type="text"
             value={genre}
             onChange={(event) => setGenre(event.target.value)}
-            placeholder="Enter movie genre"
+            placeholder="e.g. Action, Drama"
             required
           />
         </div>
 
-        <div>
+        <div className="form-field">
           <label htmlFor="year">Release Year</label>
           <input
             id="year"
@@ -79,14 +85,14 @@ function AddMovieForm({ onAddMovie }: AddMovieFormProps) {
           />
         </div>
 
-        <div>
-          <label htmlFor="rating">Rating (0–10)</label>
+        <div className="form-field">
+          <label htmlFor="rating">Movie Rating</label>
           <input
             id="rating"
             type="number"
             value={rating}
             onChange={(event) => setRating(event.target.value)}
-            placeholder="e.g. 8.5"
+            placeholder="Rate from 0 to 10"
             min="0"
             max="10"
             step="0.1"
@@ -94,21 +100,27 @@ function AddMovieForm({ onAddMovie }: AddMovieFormProps) {
           />
         </div>
 
-        <div>
-          <label htmlFor="poster">Poster URL</label>
+        <div className="form-field full-width">
+          <label htmlFor="poster">Movie Poster URL</label>
           <input
             id="poster"
             type="url"
             value={poster}
             onChange={(event) => setPoster(event.target.value)}
-            placeholder="Paste poster image URL"
+            placeholder="Paste your movie poster image URL"
             required
           />
         </div>
 
-        <button type="submit">Add Movie</button>
+        <div className="form-actions">
+          <button type="submit" className="add-movie-button">
+            + Add Movie to Collection
+          </button>
+
+          <span>Complete the details above to add your movie.</span>
+        </div>
       </form>
-    </div>
+    </section>
   );
 }
 

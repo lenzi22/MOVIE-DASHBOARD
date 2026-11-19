@@ -1,31 +1,47 @@
-// 1. Define what a Movie object looks like (temporary until src/types/Movie.ts is ready)
-export interface Movie {
-  id: string | number;
-  title: string;
-  watched?: boolean;
-  rating?: number;
-}
 
-// 2. Define the shape of the calculated stats object we will return
-export interface MovieStatsResult {
+import type { Movie } from '../types/Movie';
+
+export interface MovieStats {
   totalMovies: number;
-  watchedCount: number;
+  watchedMovies: number;
+  toWatchMovies: number;
   averageRating: number;
 }
 
-// 3. The helper function that takes an array of movies and computes the numbers
-export function calculateMovieStats(movies: Movie[]): MovieStatsResult {
+export function calculateMovieStats(movies: Movie[]): MovieStats {
   const totalMovies = movies.length;
-  const watchedCount = movies.filter((movie) => movie.watched).length;
 
-  const ratedMovies = movies.filter((movie) => typeof movie.rating === 'number');
-  const totalRating = ratedMovies.reduce((sum, movie) => sum + (movie.rating ?? 0), 0);
+  // Count movies marked as watched.
+  const watchedMovies = movies.filter(
+    (movie) => movie.status === true
+  ).length;
+
+  // Calculate movies that are still waiting to be watched.
+  const toWatchMovies = totalMovies - watchedMovies;
+
+  // Include only valid ratings between 0 and 10.
+  const ratedMovies = movies.filter(
+    (movie) =>
+      typeof movie.rating === 'number' &&
+      Number.isFinite(movie.rating) &&
+      movie.rating >= 0 &&
+      movie.rating <= 10
+  );
+
+  const totalRating = ratedMovies.reduce(
+    (sum, movie) => sum + (movie.rating ?? 0),
+    0
+  );
+
   const averageRating =
-    ratedMovies.length > 0 ? Number((totalRating / ratedMovies.length).toFixed(1)) : 0;
+    ratedMovies.length > 0
+      ? Number((totalRating / ratedMovies.length).toFixed(1))
+      : 0;
 
   return {
     totalMovies,
-    watchedCount,
+    watchedMovies,
+    toWatchMovies,
     averageRating,
   };
 }

@@ -1,0 +1,25 @@
+{
+  "bookings": [
+    {
+      "id": "1",
+      "customer": "Sarah Ahmed",
+      "destination": "Volcanoes National Park",
+      "status": "Confirmed",
+      "amount": 500
+    },
+    {
+      "id": "2",
+      "customer": "John Smith",
+      "destination": "Lake Kivu",
+      "status": "Pending",
+      "amount": 300
+    },
+    {
+      "id": "3",
+      "customer": "Mary James",
+      "destination": "Akagera National Park",
+      "status": "Completed",
+      "amount": 700
+    }
+  ]
+}

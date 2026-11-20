@@ -1,25 +1,69 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddMovieForm from "./components/AddMovieForm";
 import StatsSummary from "./components/StatsSummary";
 import Login from "./components/Login";
+import { MovieList } from "./component/MovieList";
 import type { Movie } from "./types/Movie";
+import { getMovies, addMovie } from "./services/movieApi";
 import "./App.css";
+
+type MovieFilter = "all" | "watched" | "unwatched";
 
 function App() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
+  const [activeFilter, setActiveFilter] = useState<MovieFilter>("all");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const handleAddMovie = (newMovie: Omit<Movie, "id">) => {
-    const movieWithId: Movie = {
-      ...newMovie,
-      id: Date.now(),
+  // Fetch movies from Mock API when the application starts
+  useEffect(() => {
+    const loadMovies = async () => {
+      try {
+        setLoading(true);
+        const data = await getMovies();
+        setMovies(data);
+        setError("");
+      } catch (err) {
+        console.error("Error loading movies:", err);
+        setError("Unable to load movies. Please check that the Mock API is running.");
+      } finally {
+        setLoading(false);
+      }
     };
 
-    setMovies((previousMovies) => [
-      ...previousMovies,
-      movieWithId,
-    ]);
+    loadMovies();
+  }, []);
+
+  // Add movie to Mock API
+  const handleAddMovie = async (newMovie: Omit<Movie, "id">) => {
+    try {
+      const savedMovie = await addMovie(newMovie);
+
+      setMovies((previousMovies) => [
+        ...previousMovies,
+        savedMovie,
+      ]);
+
+      setSelectedMovieId(savedMovie.id);
+      setError("");
+    } catch (err) {
+      console.error("Error adding movie:", err);
+      setError("Could not add movie. Please try again.");
+    }
+  };
+
+  // Filter movies
+  const filteredMovies = movies.filter((movie) => {
+    if (activeFilter === "watched") return movie.watched;
+    if (activeFilter === "unwatched") return !movie.watched;
+    return true;
+  });
+
+  const handleSelectMovie = (movie: Movie) => {
+    setSelectedMovieId(movie.id);
   };
 
   if (!isLoggedIn) {
@@ -28,8 +72,6 @@ function App() {
 
   return (
     <main className="dashboard-page">
-
-      {/* DASHBOARD HEADER */}
       <header className="dashboard-header">
         <div className="brand">
           <div className="brand-icon">🎬</div>
@@ -47,7 +89,6 @@ function App() {
         </button>
       </header>
 
-      {/* WELCOME SECTION */}
       <section className="dashboard-intro">
         <div>
           <p className="welcome-label">YOUR PERSONAL DASHBOARD</p>
@@ -58,13 +99,16 @@ function App() {
         </div>
       </section>
 
-      {/* MOVIE STATISTICS */}
+      {error && (
+        <p role="alert" style={{ color: "#ef4444", padding: "12px" }}>
+          {error}
+        </p>
+      )}
+
       <StatsSummary movies={movies} />
 
-      {/* ADD MOVIE FORM */}
       <AddMovieForm onAddMovie={handleAddMovie} />
 
-      {/* MOVIE COLLECTION */}
       <section className="watchlist-section">
         <div className="watchlist-heading">
           <div>
@@ -77,54 +121,62 @@ function App() {
           </span>
         </div>
 
-        {movies.length === 0 ? (
-          <div className="empty-state">
-            <div className="empty-icon">🎞️</div>
-            <h3>Your collection is waiting</h3>
-            <p>
-              You haven't added any movies yet.
-              Start building your collection using the form above.
-            </p>
-          </div>
+        <div className="flex flex-wrap gap-3 my-5">
+          <button
+            onClick={() => setActiveFilter("all")}
+            className={`px-4 py-2 rounded-lg ${
+              activeFilter === "all"
+                ? "bg-indigo-600 text-white"
+                : "bg-[#22222e] text-slate-300"
+            }`}
+          >
+            All ({movies.length})
+          </button>
+
+          <button
+            onClick={() => setActiveFilter("watched")}
+            className={`px-4 py-2 rounded-lg ${
+              activeFilter === "watched"
+                ? "bg-indigo-600 text-white"
+                : "bg-[#22222e] text-slate-300"
+            }`}
+          >
+            Watched ({movies.filter((movie) => movie.watched).length})
+          </button>
+
+          <button
+            onClick={() => setActiveFilter("unwatched")}
+            className={`px-4 py-2 rounded-lg ${
+              activeFilter === "unwatched"
+                ? "bg-indigo-600 text-white"
+                : "bg-[#22222e] text-slate-300"
+            }`}
+          >
+            To Watch ({movies.filter((movie) => !movie.watched).length})
+          </button>
+        </div>
+
+        {loading ? (
+          <p>Loading your movies...</p>
         ) : (
-          <div className="movie-list">
-            {movies.map((movie) => (
-              <article className="movie-card" key={movie.id}>
-                {movie.poster && (
-                  <img
-                    src={movie.poster}
-                    alt={`${movie.title} poster`}
-                  />
-                )}
-
-                <div className="movie-card-content">
-                  <h3>{movie.title}</h3>
-                  <p>{movie.genre} • {movie.year}</p>
-                  <p className="movie-rating">
-                    ★ {movie.rating}/10
-                  </p>
-
-                  <span
-                    className={
-                      movie.watched
-                        ? "movie-status watched"
-                        : "movie-status pending"
-                    }
-                  >
-                    {movie.watched ? "Watched" : "To Watch"}
-                  </span>
-                </div>
-              </article>
-            ))}
-          </div>
+          <MovieList
+            title={
+              activeFilter === "all"
+                ? "All Movies"
+                : activeFilter === "watched"
+                  ? "Watched Movies"
+                  : "Movies To Watch"
+            }
+            movies={filteredMovies}
+            selectedId={selectedMovieId}
+            onSelectMovie={handleSelectMovie}
+          />
         )}
       </section>
 
-      {/* FOOTER */}
       <footer className="dashboard-footer">
         <p>MovieWatchlist • Your next favourite movie starts here.</p>
       </footer>
-
     </main>
   );
 }

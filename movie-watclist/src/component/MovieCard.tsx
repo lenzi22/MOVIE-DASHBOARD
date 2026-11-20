@@ -1,5 +1,6 @@
-import { Star } from 'lucide-react';
-import type { Movie } from '../types';
+
+import { Star } from "lucide-react";
+import type { Movie } from "../types/Movie";
 
 interface MovieCardProps {
   movie: Movie;
@@ -7,54 +8,62 @@ interface MovieCardProps {
   onSelect: (movie: Movie) => void;
 }
 
-export function MovieCard({ movie, isSelected, onSelect }: MovieCardProps) {
-  const isWatched = movie.status === 'watched';
-
+export function MovieCard({
+  movie,
+  isSelected,
+  onSelect,
+}: MovieCardProps) {
   return (
-    <div
+    <article
       onClick={() => onSelect(movie)}
-      className={`group relative rounded-2xl overflow-hidden bg-[#17192d] border transition-all duration-300 cursor-pointer aspect-[16/10] ${
+      className={`group overflow-hidden rounded-2xl bg-[#17192d] border cursor-pointer transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/10 ${
         isSelected
-          ? 'border-indigo-500 ring-2 ring-indigo-500/30 shadow-lg shadow-indigo-500/10'
-          : 'border-white/[0.07] hover:border-indigo-400/50'
+          ? "border-indigo-500 ring-2 ring-indigo-500/30"
+          : "border-white/10 hover:border-indigo-400/50"
       }`}
     >
-      <img
-        src={movie.posterUrl}
-        alt={movie.title}
-        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-[#0b0d18] via-[#0b0d18]/35 to-transparent" />
+      {/* Movie Poster */}
+      <div className="relative aspect-[2/3] overflow-hidden bg-[#22243a]">
+        {movie.poster ? (
+          <img
+            src={movie.poster}
+            alt={`${movie.title} poster`}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center text-slate-400">
+            No poster available
+          </div>
+        )}
 
-      {/* Top-left rating badge */}
-      <span className="absolute top-3 left-3 flex items-center gap-1 bg-[#101222]/85 backdrop-blur-md text-amber-400 text-[11px] font-bold px-2.5 py-1 rounded-full border border-white/10">
-        <Star className="w-3 h-3 fill-amber-400" />
-        {movie.rating}
-      </span>
+        {/* Rating */}
+        <span className="absolute top-3 left-3 flex items-center gap-1 rounded-full bg-black/75 px-3 py-1.5 text-xs font-bold text-amber-400 backdrop-blur">
+          <Star size={13} fill="currentColor" />
+          {movie.rating}
+        </span>
 
-      {/* Top-right status pill */}
-      <span
-        className={`absolute top-3 right-3 backdrop-blur-md text-[11px] font-medium px-3 py-1 rounded-full border capitalize ${
-          isWatched
-            ? 'bg-emerald-950/85 text-emerald-300 border-emerald-500/30'
-            : 'bg-[#101222]/85 text-slate-200 border-white/15'
-        }`}
-      >
-        {movie.status}
-      </span>
+        {/* Watch status */}
+        <span
+          className={`absolute top-3 right-3 rounded-full px-3 py-1.5 text-[10px] font-semibold backdrop-blur ${
+            movie.watched
+              ? "bg-emerald-500/90 text-white"
+              : "bg-black/75 text-slate-200"
+          }`}
+        >
+          {movie.watched ? "✓ Watched" : "To Watch"}
+        </span>
+      </div>
 
-      {/* Title, Year & Review Preview */}
-      <div className="absolute bottom-3 left-3.5 right-3.5">
-        <h4 className="font-semibold text-sm text-white truncate drop-shadow">
+      {/* Movie Information */}
+      <div className="p-4">
+        <h4 className="truncate text-base font-bold text-white group-hover:text-indigo-400 transition-colors">
           {movie.title}
         </h4>
-        <p className="text-[11px] text-slate-400">
-          {movie.year} • {movie.genre}
-        </p>
-        <p className="text-[11px] text-slate-300/80 truncate mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
-          &ldquo;{movie.review}&rdquo;
+
+        <p className="mt-2 text-xs text-slate-400">
+          {movie.year} <span className="mx-1">•</span> {movie.genre}
         </p>
       </div>
-    </div>
+    </article>
   );
 }

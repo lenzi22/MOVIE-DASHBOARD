@@ -1,17 +1,17 @@
 
 {
   "movies": [
-    {"id":"1","title":"Inception","genre":"Sci-Fi","year":2010,"rating":8.8,"watched":true,"poster":"https://placehold.co/300x450?text=Inception"},
-    {"id":"2","title":"The Dark Knight","genre":"Action","year":2008,"rating":9.0,"watched":true,"poster":"https://placehold.co/300x450?text=Dark+Knight"},
-    {"id":"3","title":"Interstellar","genre":"Sci-Fi","year":2014,"rating":8.7,"watched":false,"poster":"https://placehold.co/300x450?text=Interstellar"},
-    {"id":"4","title":"Titanic","genre":"Romance","year":1997,"rating":7.9,"watched":true,"poster":"https://placehold.co/300x450?text=Titanic"},
-    {"id":"5","title":"The Conjuring","genre":"Horror","year":2013,"rating":7.5,"watched":false,"poster":"https://placehold.co/300x450?text=Conjuring"},
-    {"id":"6","title":"The Lion King","genre":"Animation","year":1994,"rating":8.5,"watched":false,"poster":"https://placehold.co/300x450?text=Lion+King"},
-    {"id":"7","title":"Gladiator","genre":"Drama","year":2000,"rating":8.5,"watched":true,"poster":"https://placehold.co/300x450?text=Gladiator"},
-    {"id":"8","title":"The Hangover","genre":"Comedy","year":2009,"rating":7.7,"watched":false,"poster":"https://placehold.co/300x450?text=Hangover"},
-    {"id":"9","title":"Black Panther","genre":"Action","year":2018,"rating":7.3,"watched":false,"poster":"https://placehold.co/300x450?text=Black+Panther"},
-    {"id":"10","title":"Joker","genre":"Thriller","year":2019,"rating":8.4,"watched":true,"poster":"https://placehold.co/300x450?text=Joker"},
-    {"id":"11","title":"Finding Nemo","genre":"Animation","year":2003,"rating":8.2,"watched":false,"poster":"https://placehold.co/300x450?text=Finding+Nemo"},
-    {"id":"12","title":"The Notebook","genre":"Romance","year":2004,"rating":7.8,"watched":false,"poster":"https://placehold.co/300x450?text=Notebook"}
+    {"id":"1","title":"Inception","genre":"Sci-Fi","year":2010,"rating":8.8,"watched":true,"poster":"/public/posters/inception.jpg"},
+    {"id":"2","title":"The Dark Knight","genre":"Action","year":2008,"rating":9.0,"watched":true,"poster":"/public/posters/ThedarkKnight.jpg"},
+    {"id":"3","title":"Interstellar","genre":"Sci-Fi","year":2014,"rating":8.7,"watched":false,"poster":"/public/posters/interstellar.jpg"},
+    {"id":"4","title":"Titanic","genre":"Romance","year":1997,"rating":7.9,"watched":true,"poster":"/public/posters/Titanic.jpg"},
+    {"id":"5","title":"The Conjuring","genre":"Horror","year":2013,"rating":7.5,"watched":false,"poster":"/public/posters/Conjuring.jpg"},
+    {"id":"6","title":"The Lion King","genre":"Animation","year":1994,"rating":8.5,"watched":false,"poster":"/public/posters/lionKing.jpg"},
+    {"id":"7","title":"Gladiator","genre":"Drama","year":2000,"rating":8.5,"watched":true,"poster":"/public/posters/Gladiator.jpg"},
+    {"id":"8","title":"The Hangover","genre":"Comedy","year":2009,"rating":7.7,"watched":false,"poster":"/public/posters/hangover.jpg"},
+    {"id":"9","title":"Black Panther","genre":"Action","year":2018,"rating":7.3,"watched":false,"poster":"/public/posters/blackpanther.jpeg"},
+    {"id":"10","title":"Joker","genre":"Thriller","year":2019,"rating":8.4,"watched":true,"poster":"/public/posters/joker.jpg"},
+    {"id":"11","title":"Finding Nemo","genre":"Animation","year":2003,"rating":8.2,"watched":false,"poster":"/public/posters/findingNemo.jpg"},
+    {"id":"12","title":"The Notebook","genre":"Romance","year":2004,"rating":7.8,"watched":false,"poster":"/public/posters/notebook.webp"}
   ]
 }
